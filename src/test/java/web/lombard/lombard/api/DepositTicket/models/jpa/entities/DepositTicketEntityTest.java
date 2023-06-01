@@ -28,7 +28,7 @@ class DepositTicketEntityTest {
         var org = new OrganizationEntity("Ломбард №1", "Ломбард №1", 1234567891, 123456789, 1, "123456, город Град, улица Мира, дом 5", "123456, город Град, улица Мира, дом 5", "+79131231212", "email@lombard1.com", "www.lombard1.com");
         List<PaymentEntity> paymentEntities = new ArrayList<>();
         paymentEntities.add(new PaymentEntity(BigDecimal.valueOf(10_000), Calendar.getInstance().getTime(), false));
-        var loan = new LoanEntity(BigDecimal.valueOf(10_000), 103.3, "RUB", "null", "", Calendar.getInstance().getTime(), paymentEntities);
+        var loan = new LoanEntity(BigDecimal.valueOf(10_000), 103.3, "руб.", "null", "", Calendar.getInstance().getTime(), paymentEntities);
         var person = new PersonEntity("Иван", "Иванович", "Иванов", Date.valueOf(LocalDate.now()), "адрес");
         var ticket = new DepositTicketEntity(1021, Date.valueOf(LocalDate.now()), org, person, loan);
         depositTicketRepository.save(ticket);

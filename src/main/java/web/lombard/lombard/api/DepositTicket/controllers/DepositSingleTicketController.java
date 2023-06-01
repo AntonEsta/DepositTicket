@@ -3,7 +3,6 @@ package web.lombard.lombard.api.DepositTicket.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -22,14 +21,13 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController()
-@AllArgsConstructor(onConstructor_ = {@Autowired})
 @RequestMapping("/pawnshop/api/v1/ticket")
 public class DepositSingleTicketController {
 
-//    @Autowired
+    @Autowired
     DepositTicketRepository depositTicketRepository;
 
-//    @Autowired
+    @Autowired
     LoanRepository loanRepository;
 
 
@@ -56,7 +54,7 @@ public class DepositSingleTicketController {
 
     @PatchMapping("/prolongation")
     @ResponseStatus(HttpStatus.OK)
-    DepositTicketEntity prolongateDepositTicket(@RequestBody ProlongationLoanData data) {
+    DepositTicketEntity prolongateDepositTicket(@RequestBody ProlongationLoanData data, HttpServletRequest httpServletRequest) {
         var depositTicket = depositTicketRepository.findById(data.loanId())
                 .orElseThrow(DataNotFoundException::new);
         depositTicket.getLoan().setReturnDate(getNewDate(depositTicket.getLoan().getReturnDate(), data.extraDays()));

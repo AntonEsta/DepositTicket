@@ -3,14 +3,9 @@ package web.lombard.lombard.api.DepositTicket.models.jpa.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.beans.factory.annotation.Autowired;
-import web.lombard.lombard.api.DepositTicket.controllers.exceptions.DataNotFoundException;
-import web.lombard.lombard.api.DepositTicket.models.jpa.repositories.CurrencyRepository;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,13 +15,12 @@ import java.util.List;
 @Table(name = "loans")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-//@AllArgsConstructor(onConstructor_ = {@Autowired})
 @Data
 public class LoanEntity {
 
-    @Transient
-    @Autowired
-    CurrencyRepository currencyRepository;
+//    @Transient
+//    @Autowired()
+//    CurrencyRepository currencyRepository;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,12 +36,12 @@ public class LoanEntity {
     @PositiveOrZero
     Double interestRate;   // Процентная ставка в процентах годовых
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    CurrencyEntity currency;
+//    @OneToOne
+//    @PrimaryKeyJoinColumn
+//    Currency currency;
 
-//    @NotBlank
-//    String currency;
+    @NotBlank
+    String currency;
 
     @Column(name = "loan_term", nullable = false)
     @Size(min = 3, max = 255)
@@ -74,23 +68,18 @@ public class LoanEntity {
         }
     }
 
-    @Autowired
-    public LoanEntity(BigDecimal summa, Double interestRate, String currencyIsoCodeString, String loanTerm, String determiningForeignExchangeRate, Date returnDate, List<PaymentEntity> paymentEntities) {
+    public LoanEntity(BigDecimal summa, Double interestRate, String currency, String loanTerm, String determiningForeignExchangeRate, Date returnDate, List<PaymentEntity> paymentEntities) {
         this.summa = summa;
         this.interestRate = interestRate;
-        this.currency = getCurrencyByIsoCodeString(currencyIsoCodeString);
+        this.currency = currency;
         this.loanTerm = loanTerm;
         this.determiningForeignExchangeRate = determiningForeignExchangeRate;
         this.returnDate = returnDate;
         this.payments = paymentEntities;
     }
 
-    public void setCurrency(@NotBlank @Size(min = 3, max = 3) String isoCodeString) {
-        this.currency = getCurrencyByIsoCodeString(isoCodeString);
-    }
-
-    private CurrencyEntity getCurrencyByIsoCodeString(@NotBlank @Size(min = 3, max = 3) String isoCodeString) {
-        return currencyRepository.findByIsoCodeString(isoCodeString).orElseThrow(() -> new DataNotFoundException("Iso Code of currency not found!"));
-    }
+//    public void setCurrency(@NotBlank @Size(min = 3, max = 3) String isoCodeString) {
+//        this.currency = currencyRepository.findByIsoCodeString(isoCodeString).orElseThrow(() -> new DataNotFoundException("Iso Code of currency not found!"));
+//    }
 
 }

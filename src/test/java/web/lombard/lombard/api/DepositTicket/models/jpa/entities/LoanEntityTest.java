@@ -22,7 +22,7 @@ class LoanEntityTest {
     public void createLoan() {
         List<PaymentEntity> paymentEntities = new ArrayList<>(1);
         paymentEntities.add(new PaymentEntity(BigDecimal.valueOf(10_000), Calendar.getInstance().getTime(), false));
-        var loan = new LoanEntity(BigDecimal.valueOf(10_000), 103.3, "RUB", "null", "", Calendar.getInstance().getTime(), paymentEntities);
+        var loan = new LoanEntity(BigDecimal.valueOf(10_000), 103.3, "руб.", "null", "", Calendar.getInstance().getTime(), paymentEntities);
         var savedLoan = loanRepository.save(loan);
         savedLoan = loanRepository.findById(savedLoan.getId()).orElse(null);
         assert savedLoan != null;
