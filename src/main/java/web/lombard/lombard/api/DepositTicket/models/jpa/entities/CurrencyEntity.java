@@ -2,23 +2,19 @@ package web.lombard.lombard.api.DepositTicket.models.jpa.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table
+@Table(name = "currencies")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@Getter
-@Setter
-public class Currency {
+@Data
+public class CurrencyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "currency_id")
+//    @Column(name = "currency_id")
     Long id;
 
     @NotBlank
@@ -35,15 +31,10 @@ public class Currency {
     @Size(min = 3, max = 3)
     String isoCodeString;
 
-    @Column(name = "sign_utf8")
-    @NotBlank
-    Character signUTF8;
-
-    public Currency(String name, Integer isoCodeNumber, String isoCodeString, Character signUTF8) {
+    public CurrencyEntity(String name, Integer isoCodeNumber, String isoCodeString) {
         this.name = name;
         this.isoCodeNumber = isoCodeNumber;
         this.isoCodeString = isoCodeString;
-        this.signUTF8 = signUTF8;
     }
 
 }

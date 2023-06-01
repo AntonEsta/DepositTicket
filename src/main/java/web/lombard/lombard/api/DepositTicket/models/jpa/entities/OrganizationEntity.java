@@ -2,22 +2,25 @@ package web.lombard.lombard.api.DepositTicket.models.jpa.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.LazyGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "organizations")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@Setter
-@Getter
-public class Organization {
+@Data
+public class OrganizationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "organization_id")
+//    @Column(name = "organization_id")
     Long id;
 
     @Column(nullable = false)
@@ -31,15 +34,13 @@ public class Organization {
 
     // TODO Check validation annotations
     @Column(name = "inn", unique = true, nullable = false, length = 10)
-    @Size(min = 10, max = 10)
-    @Pattern(regexp = "^[1-9]{1}[\\d]{9}$")
+    @Digits(integer = 10, fraction = 0)
     Integer inn;             //    индивидуальный номер налогоплательщика (ИНН) ломбарда
 
 
     // TODO Check validation annotations
     @Column(name = "ogrn", unique = true, nullable = false, length = 10)
-    @Size(min = 12, max = 12)
-    @Pattern(regexp = "^[1-9]{1}[\\d]{11}$")
+    @Digits(integer = 12, fraction = 0)
     Integer ogrn;            //    основной государственный регистрационный номер (ОГРН) ломбарда
 
     @Column(name = "reg_number", nullable = false, unique = true)
@@ -64,7 +65,10 @@ public class Organization {
     @Pattern(regexp = "^(https?\\:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})(\\/[\\w]*)*$")
     String website;         //    адрес официального сайта ломбарда в информационно-телекоммуникационной сети "Интернет" (при наличии)
 
-    public Organization(@NonNull String title, @NonNull String fullTitle, @NonNull Integer inn, @NonNull Integer ogrn, @NonNull Integer registrationNumber, @NonNull String actualLocation, @NonNull String legalAddress, @NonNull String telephone, String email, String website) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<SubdivisionEntity> subdivisions = new ArrayList<>();
+
+    public OrganizationEntity(@NonNull String title, @NonNull String fullTitle, @NonNull Integer inn, @NonNull Integer ogrn, @NonNull Integer registrationNumber, @NonNull String actualLocation, @NonNull String legalAddress, @NonNull String telephone, String email, String website) {
         this.title = title;
         this.fullTitle = fullTitle;
         this.inn = inn;
